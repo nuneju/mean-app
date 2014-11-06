@@ -1,0 +1,7 @@
+{
+  "name": "mean-app",
+  "description": "mean app, currently with out the a... so men app?",
+  "repository": "https://github.com/mongolab/hello-mongoose.git",
+  "keywords": ["node", "mongoose", "ODM"],
+  "addons": ["mongolab"]
+}
