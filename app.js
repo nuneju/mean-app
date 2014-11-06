@@ -95,6 +95,12 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+
+app.use("/client",express.static(__dirname + "/client"));
+
+app.use("/stylesheets",express.static(__dirname + "/stylesheets"));
+
+
 app.use(methodOverride());
 app.use(session({
 	secret: 'keyboard cat',
@@ -107,7 +113,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(__dirname + '/../../public'));
 
 app.get('/', function(req, res){
 	res.render('index', { user: req.user });
@@ -134,7 +139,6 @@ app.post('/login', function(req, res, next) {
 		});
 	})(req, res, next);
 });
-
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next(); }
