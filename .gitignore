@@ -12,6 +12,8 @@ lib-cov
 pids
 logs
 results
-
+**/.sass-cache
+**/.sass-cache/*
+**.sass-cache**
 node_modules
 npm-debug.log
