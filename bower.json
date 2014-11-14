@@ -1,0 +1,23 @@
+{
+  "name": "mean-app",
+  "version": "0.0.0",
+  "homepage": "https://github.com/nuneju/mean-app",
+  "authors": [
+    "Juan Nunez <nunezj2@gmail.com>"
+  ],
+  "description": "To do",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "require": "*",
+    "jquery": "~2.1.1",
+    "underscore": "~1.7.0"
+  }
+}
