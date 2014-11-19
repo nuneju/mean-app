@@ -1,1 +1,7 @@
 @import "bourbon";
+$gw-column: 100px;         // Column Width
+$gw-gutter: 10px;          // Gutter Width
+div {
+	width: grid-width(2);    // returns 520px;
+	margin-left: $gw-gutter; // returns 40px;
+}

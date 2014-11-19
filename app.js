@@ -83,12 +83,11 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-
 require('./routes/routes.js')(app);
+
+
+
+
 
 app.listen(port, function() {
 	console.log('Express server listening on port' + port);

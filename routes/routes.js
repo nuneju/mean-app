@@ -1,6 +1,6 @@
 module.exports = function(app){
-	var passport = require('passport'),
-	LocalStrategy = require('passport-local').Strategy;
+	this.passport = require('passport');
+	var LocalStrategy = require('passport-local').Strategy;
 	passport.serializeUser(function(user, done) {
 		done(null, user.id);
 	});
@@ -70,4 +70,6 @@ module.exports = function(app){
 		req.logout();
 		res.redirect('/');
 	});
+	app.use(passport.initialize());
+	app.use(passport.session());
 }
