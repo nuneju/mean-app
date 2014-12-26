@@ -86,7 +86,7 @@ gameOne.save(function (err) {if (err) console.log ('Error on save!')});
 gameTwo.save(function (err) {if (err) console.log ('Error on save!')});
 
 var app = express();
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/../views');
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs-locals'));
 app.use(logger("combined"));
