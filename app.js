@@ -8,8 +8,33 @@ var express = require('express'),
 	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
-	session = require('express-session');
+	session = require('express-session'),
+	passport = require('passport'),
+	LocalStrategy = require('passport-local').Strategy;
 	
+	
+passport.serializeUser(function(user, done) {
+	done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+	User.findById(id, function (err, user) {
+		done(err, user);
+	});
+});
+passport.use(new LocalStrategy(function(username, password, done) {
+	User.findOne({ username: username }, function(err, user) {
+		if (err) { return done(err); }
+		if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
+		user.comparePassword(password, function(err, isMatch) {
+			if (err) return done(err);
+			if(isMatch) {
+				return done(null, user);
+			} else {
+				return done(null, false, { message: 'Invalid password' });
+			}
+		});
+	});
+}));
 
 mongoose.connect(uristring, function (err, res) {
 	if (err) { 
@@ -65,16 +90,11 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs-locals'));
 app.use(logger("combined"));
+
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
-
-app.use("/client",express.static(__dirname + "/client"));
-app.use("/stylesheets",express.static(__dirname + "/stylesheets"));
-app.use("/jasmine",express.static(__dirname + "/jasmine"));
-
-app.use(methodOverride());
 app.use(session({
 	secret: 'keyboard cat',
 	name: 'cookie_name',
@@ -83,11 +103,15 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
-require('./routes/routes.js')(app);
+app.use(passport.initialize());
+app.use(passport.session());
 
+require('./routes/routes.js')(app, passport);
+app.use("/client",express.static(__dirname + "/client"));
+app.use("/stylesheets",express.static(__dirname + "/stylesheets"));
+app.use("/jasmine",express.static(__dirname + "/jasmine"));
 
-
-
+app.use(methodOverride());
 
 app.listen(port, function() {
 	console.log('Express server listening on port' + port);

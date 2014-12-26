@@ -5,3 +5,6 @@ div {
 	width: grid-width(2);    // returns 520px;
 	margin-left: $gw-gutter; // returns 40px;
 }
+test {
+	border:1px solid red ;
+}
