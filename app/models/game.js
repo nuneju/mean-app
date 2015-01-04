@@ -8,4 +8,4 @@ var gameSchema = new mongoose.Schema({
 var gameUser = mongoose.model('gameUser', gameSchema);
 module.exports = {
 	gameUser:gameUser
-}
+};

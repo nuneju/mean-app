@@ -11,8 +11,8 @@ var express = require('express'),
 	session = require('express-session'),
 	passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy;
-	
-	
+
+
 passport.serializeUser(function(user, done) {
 	done(null, user.id);
 });
@@ -37,7 +37,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 mongoose.connect(uristring, function (err, res) {
-	if (err) { 
+	if (err) {
 		console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 	} else {
 		console.log ('Succeeded connected to: ' + uristring);
@@ -73,17 +73,17 @@ gameUser.remove({}, function(err) {
 });
 
 var gameOne = new gameUser ({
-	nom: "est", 
+	nom: "est",
 	words:["best","test","guest"]
 });
 
 var gameTwo = new gameUser ({
-	nom: "it", 
+	nom: "it",
 	words:["bit","quit","sit"]
 });
 
-gameOne.save(function (err) {if (err) console.log ('Error on save!')});
-gameTwo.save(function (err) {if (err) console.log ('Error on save!')});
+gameOne.save(function (err) {if (err){console.log ('Error on save!');}});
+gameTwo.save(function (err) {if (err){console.log ('Error on save!');}});
 
 var app = express();
 app.set('views', __dirname + '/../views');

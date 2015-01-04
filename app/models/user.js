@@ -1,7 +1,7 @@
 var mongoose = require("mongoose"),
 	bcrypt = require('bcrypt'),
 	SALT_WORK_FACTOR = 10;
-	
+
 userSchema = mongoose.Schema({
 	username: { type: String, required: true, unique: true },
 	email: { type: String, required: true, unique: true },
@@ -40,4 +40,4 @@ var User = mongoose.model('User', userSchema);
 
 module.exports = {
 	User:User
-}
+};

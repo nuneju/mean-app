@@ -1,11 +1,13 @@
 module.exports = function(app, passport){
 	function ensureAuthenticated(req, res, next) {
 		if (req.isAuthenticated()) { return next(); }
-		res.redirect('/login')
+		res.redirect('/login');
 	}
+
 	app.get('/', function(req, res){
 		res.render('index', { user: req.user });
 	});
+
 	app.get('/account', ensureAuthenticated, function(req, res){
 		res.render('account', { user: req.user });
 	});
@@ -13,12 +15,15 @@ module.exports = function(app, passport){
 	app.get('/login', function(req, res){
 		res.render('login', { user: req.user, message: req.session.messages });
 	});
+
 	app.post('/login', function(req, res, next) {
 		passport.authenticate('local', function(err, user, info) {
-			if (err) { return next(err) }
+			if (err) {
+				return next(err);
+			}
 			if (!user) {
 				req.session.messages =  [info.message];
-				return res.redirect('/login')
+				return res.redirect('/login');
 			}
 			req.logIn(user, function(err) {
 				if (err) { return next(err); }
