@@ -10,7 +10,12 @@ var express = require('express'),
 	methodOverride = require('method-override'),
 	session = require('express-session'),
 	passport = require('passport'),
-	LocalStrategy = require('passport-local').Strategy;
+	LocalStrategy = require('passport-local').Strategy,
+	//include models
+	accountModel = require("./models/account.js").accountModel,
+	categoryModel = require("./models/category.js").categoryModel,
+	userModel = require("./models/user.js").userModel,
+	userModel = require("./models/user.js").userModel;
 
 passport.serializeUser(function(user, done) {
 	done(null, user.id);
@@ -51,14 +56,13 @@ db.once('open', function callback() {
 	console.log('Connected to DB');
 });
 
-User = require("./models/user.js").User;
-User.remove({}, function(err) {
+userModel.remove({}, function(err) {
 	if (err) {
 		console.log ('error deleting old data.');
 	}
 });
 
-var user = new User({ username: 'bob', email: 'bob@example.com', password: 'secret' });
+var user = new userModel({ username: 'bob', email: 'bob@example.com', password: 'secret' });
 user.save(function(err) {
 	if(err) {
 		console.log(err);
@@ -67,28 +71,6 @@ user.save(function(err) {
 	}
 });
 
-account = require("./models/account.js").account;
-category = require("./models/category.js").category;
-/*
-gameUser.remove({}, function(err) {
-	if (err) {
-		console.log ('error deleting old data.');
-	}
-});
-
-var gameOne = new gameUser ({
-	nom: "est",
-	words:["best","test","guest"]
-});
-
-var gameTwo = new gameUser ({
-	nom: "it",
-	words:["bit","quit","sit"]
-});
-
-gameOne.save(function (err) {if (err){console.log ('Error on save!');}});
-gameTwo.save(function (err) {if (err){console.log ('Error on save!');}});
-*/
 var app = express();
 app.set('views', __dirname + '/../views');
 app.set('view engine', 'ejs');

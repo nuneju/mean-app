@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
-var category = new mongoose.Schema({
+
+var categorySchema = new mongoose.Schema({
 	user_id: {
 		type:  mongoose.Schema.ObjectId,
 		ref: 'User',
@@ -10,6 +11,9 @@ var category = new mongoose.Schema({
 		required: true
 	}
 });
+
+var categoryModel = mongoose.model('categoryModel', categorySchema);
+
 module.exports = {
-	category:category
+	categoryModel:categoryModel
 };

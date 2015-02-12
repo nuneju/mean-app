@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+
 var accountSchema = new mongoose.Schema({
 	user_id: {
 		type: mongoose.Schema.ObjectId,
@@ -18,7 +19,9 @@ var accountSchema = new mongoose.Schema({
 		required: true
 	},
 });
-var account = mongoose.model('account', accountSchema);
+
+var accountModel = mongoose.model('accountModel', accountSchema);
+
 module.exports = {
-	account:account
+	accountModel:accountModel
 };

@@ -1,6 +1,6 @@
 {
-  "name": "mean-app",
-  "description": "mean app, currently with out the a... so men app?",
+  "name": "mebn-app",
+  "description": "mebn app",
   "repository": "https://github.com/nuneju/mean-app",
   "keywords": ["node", "mongoose", "ODM"],
   "addons": ["mongolab"]
