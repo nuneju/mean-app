@@ -12,15 +12,16 @@ var express = require('express'),
 	passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy;
 
-
 passport.serializeUser(function(user, done) {
 	done(null, user.id);
 });
+
 passport.deserializeUser(function(id, done) {
 	User.findById(id, function (err, user) {
 		done(err, user);
 	});
 });
+
 passport.use(new LocalStrategy(function(username, password, done) {
 	User.findOne({ username: username }, function(err, user) {
 		if (err) { return done(err); }
@@ -56,6 +57,7 @@ User.remove({}, function(err) {
 		console.log ('error deleting old data.');
 	}
 });
+
 var user = new User({ username: 'bob', email: 'bob@example.com', password: 'secret' });
 user.save(function(err) {
 	if(err) {
@@ -65,7 +67,9 @@ user.save(function(err) {
 	}
 });
 
-gameUser = require("./models/game.js").gameUser;
+account = require("./models/account.js").account;
+category = require("./models/category.js").category;
+/*
 gameUser.remove({}, function(err) {
 	if (err) {
 		console.log ('error deleting old data.');
@@ -84,17 +88,17 @@ var gameTwo = new gameUser ({
 
 gameOne.save(function (err) {if (err){console.log ('Error on save!');}});
 gameTwo.save(function (err) {if (err){console.log ('Error on save!');}});
-
+*/
 var app = express();
 app.set('views', __dirname + '/../views');
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs-locals'));
 app.use(logger("combined"));
-
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+
 app.use(session({
 	secret: 'keyboard cat',
 	name: 'cookie_name',

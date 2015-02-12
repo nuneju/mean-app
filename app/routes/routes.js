@@ -34,6 +34,7 @@ module.exports = function(app, passport){
 	app.get('/showlist', function (req, res) {
 		res.send("<a href='/games'>Show Games</a>");
 	});
+	/*
 	app.get('/games', function (req, res) {
 		gameUser.find({}, function (err, docs) {
 			res.json(docs);
@@ -47,6 +48,7 @@ module.exports = function(app, passport){
 			});
 		}
 	});
+	*/
 	app.get('/logout', function(req, res){
 		req.logout();
 		res.redirect('/');
