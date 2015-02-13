@@ -14,7 +14,6 @@ var express = require('express'),
 	//include models
 	accountModel = require("./models/account.js").accountModel,
 	categoryModel = require("./models/category.js").categoryModel,
-	userModel = require("./models/user.js").userModel,
 	userModel = require("./models/user.js").userModel;
 
 passport.serializeUser(function(user, done) {
@@ -22,13 +21,13 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-	User.findById(id, function (err, user) {
+	userModel.findById(id, function (err, user) {
 		done(err, user);
 	});
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
-	User.findOne({ username: username }, function(err, user) {
+	userModel.findOne({ username: username }, function(err, user) {
 		if (err) { return done(err); }
 		if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
 		user.comparePassword(password, function(err, isMatch) {
@@ -56,23 +55,13 @@ db.once('open', function callback() {
 	console.log('Connected to DB');
 });
 
-userModel.remove({}, function(err) {
-	if (err) {
-		console.log ('error deleting old data.');
-	}
-});
-
-var user = new userModel({ username: 'bob', email: 'bob@example.com', password: 'secret' });
-user.save(function(err) {
-	if(err) {
-		console.log(err);
-	} else {
-		console.log('user: ' + user.username + " saved.");
-	}
-});
-
 var app = express();
+app.use("/client", express.static(process.cwd() + '/client'));
+app.use("/stylesheets", express.static(process.cwd() + '/css'));
+app.use("/jasmine", express.static(process.cwd() + '/jasmine'));
 app.set('views', __dirname + '/../views');
+
+
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs-locals'));
 app.use(logger("combined"));
@@ -80,7 +69,6 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
-
 app.use(session({
 	secret: 'keyboard cat',
 	name: 'cookie_name',
@@ -93,9 +81,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/routes.js')(app, passport);
-app.use("/client",express.static(__dirname + "/client"));
-app.use("/stylesheets",express.static(__dirname + "/stylesheets"));
-app.use("/jasmine",express.static(__dirname + "/jasmine"));
+
 
 app.use(methodOverride());
 
