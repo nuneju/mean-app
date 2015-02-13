@@ -1,17 +1,15 @@
 var express = require('express'),
 	mongodb = require('mongodb'),
 	mongoose = require ("mongoose"),
-	Schema = mongoose.Schema,
-	uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/HelloMongoose',
+	uri_string = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/HelloMongoose',
 	port = process.env.PORT || 80,
 	logger = require('morgan'),
-	cookieParser = require('cookie-parser'),
-	bodyParser = require('body-parser'),
-	methodOverride = require('method-override'),
+	cookie_parser = require('cookie-parser'),
+	body_parser = require('body-parser'),
+	method_override = require('method-override'),
 	session = require('express-session'),
 	passport = require('passport'),
-	LocalStrategy = require('passport-local').Strategy,
-	//include models
+	passport_strategy = require('passport-local').Strategy,
 	accountModel = require("./models/account.js").accountModel,
 	categoryModel = require("./models/category.js").categoryModel,
 	userModel = require("./models/user.js").userModel;
@@ -26,7 +24,7 @@ passport.deserializeUser(function(id, done) {
 	});
 });
 
-passport.use(new LocalStrategy(function(username, password, done) {
+passport.use(new passport_strategy(function(username, password, done) {
 	userModel.findOne({ username: username }, function(err, user) {
 		if (err) { return done(err); }
 		if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
@@ -41,11 +39,11 @@ passport.use(new LocalStrategy(function(username, password, done) {
 	});
 }));
 
-mongoose.connect(uristring, function (err, res) {
+mongoose.connect(uri_string, function (err, res) {
 	if (err) {
-		console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+		console.log ('ERROR connecting to: ' + uri_string + '. ' + err);
 	} else {
-		console.log ('Succeeded connected to: ' + uristring);
+		console.log ('Succeeded connected to: ' + uri_string);
 	}
 });
 
@@ -65,8 +63,8 @@ app.set('views', __dirname + '/../views');
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs-locals'));
 app.use(logger("combined"));
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({
+app.use(cookie_parser());
+app.use(body_parser.urlencoded({
 	extended: true
 }));
 app.use(session({
@@ -79,11 +77,11 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+var test = "test";
+require('./routes/routes.js')(app, passport, test);
 
-require('./routes/routes.js')(app, passport);
 
-
-app.use(methodOverride());
+app.use(method_override());
 
 app.listen(port, function() {
 	console.log('Express server listening on port' + port);
