@@ -1,4 +1,6 @@
-var userModel = require("../models/user.js").userModel;
+var userModel = require("../models/user.js").userModel,
+	accountModel = require("../models/account.js").accountModel;
+
 module.exports = function(app, passport) {
 	function ensureAuthenticated(req, res, callback) {
 		if (req.isAuthenticated()) {
@@ -10,6 +12,27 @@ module.exports = function(app, passport) {
 		res.render('index', {
 			user: req.user
 		});
+	});
+	app.get('/create_account', function(req, res) {
+		res.render('create_account', {
+			user: req.user
+		});
+	});
+	app.post('/create_account', ensureAuthenticated, function(req, res) {
+		var accountInstance = new accountModel({
+			user_id: req.user._id ,
+			name:req.body.name,
+			currency:req.body.currency,
+			balance:0
+		});
+		accountInstance.save(function(err) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log('user: ' + req.user.username + ", account:"+ req.body.name +" saved.");
+			}
+		});
+		res.redirect('/account');
 	});
 	app.get('/account', ensureAuthenticated, function(req, res) {
 		res.render('account', {
