@@ -20,23 +20,43 @@ module.exports = function(app, passport) {
 	});
 	app.post('/create_account', ensureAuthenticated, function(req, res) {
 		var accountInstance = new accountModel({
-			user_id: req.user._id ,
-			name:req.body.name,
-			currency:req.body.currency,
-			balance:0
+			user_id: req.user._id,
+			name: req.body.name,
+			currency: req.body.currency,
+			balance: 0
 		});
 		accountInstance.save(function(err) {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log('user: ' + req.user.username + ", account:"+ req.body.name +" saved.");
+				console.log('user: ' + req.user.username + ", account:" + req.body.name + " saved.");
 			}
 		});
 		res.redirect('/account');
 	});
 	app.get('/account', ensureAuthenticated, function(req, res) {
-		res.render('account', {
-			user: req.user
+		//var List1 = mongoose.model('List1');
+		//var List2 = mongoose.model('List2');
+		//var List1Objects = List1.find({});
+		//var List2Objects = List2.find({});
+		/*
+
+		*/
+		var accountInfo = accountModel.find({
+			user_id: req.user._id
+		}, function(err, records) {
+			records.forEach(function(record) {
+				//record.remove();
+				console.log(record);
+			});
+			if (err) {
+				console.log(err);
+				return res.send(400);
+			}
+			res.render('account', {
+				user: req.user,
+				records: records
+			});
 		});
 	});
 	app.get('/login', function(req, res) {
