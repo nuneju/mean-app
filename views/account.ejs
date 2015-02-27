@@ -1,3 +1,14 @@
 <% layout('layout') -%>
 <p>Username: <%= user.username %></p>
 <p>Email: <%= user.email %></p>
+<p>Accounts <br />
+	<ul>
+		<% for(var i=0; i<records.length; i++) {%>
+			<li>
+				name:<%= records[i].name %><br />
+				currency:<%= records[i].currency %><br />
+				balance:<%= records[i].balance %>
+			</li>
+		<% } %>
+	</ul>
+</p>

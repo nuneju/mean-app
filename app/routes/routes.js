@@ -35,13 +35,6 @@ module.exports = function(app, passport) {
 		res.redirect('/account');
 	});
 	app.get('/account', ensureAuthenticated, function(req, res) {
-		//var List1 = mongoose.model('List1');
-		//var List2 = mongoose.model('List2');
-		//var List1Objects = List1.find({});
-		//var List2Objects = List2.find({});
-		/*
-
-		*/
 		var accountInfo = accountModel.find({
 			user_id: req.user._id
 		}, function(err, records) {
